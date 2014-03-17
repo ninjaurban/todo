@@ -21,7 +21,7 @@ var server = http.createServer(function(request, response) {
 			break;
 
 		case 'GET':
-			response.end(items.join(', ') + '\n');
+			response.end('Kom ihåg' + items.join(', ') + '\n');
 			break;
 	}
 });
