@@ -1,0 +1,24 @@
+{
+  "name": "todo",
+  "version": "0.0.1",
+  "description": "En kom-i-håg lista",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ninjaurban/todo.git"
+  },
+  "author": "Amelie Forsman",
+  "license": "BSD",
+  "gitHead": "41d02462cc77594617131606a94f43049a24148a",
+  "bugs": {
+    "url": "https://github.com/ninjaurban/todo/issues"
+  },
+  "dependencies": {
+    "mongoose": "~3.8.8",
+    "express": "~3.5.1"
+  }
+}

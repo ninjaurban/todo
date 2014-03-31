@@ -1,47 +1,29 @@
+var express = require ('express');
+var routes = require ('./routes');
 var http = require('http');
-var url = require('url');
-var items = [];
+var path = require ('path');
 
-var show = function(response) {
-  var html = '<html><head><title>Todo List</title></head><body>'
-           + '<h1>Todo List</h1>'
-           + '<ul>'
-           + items.map(function(item){
-              return '<li>' + decodeURIComponent(item) + '</li>'
-             }).join('')
-           + '</ul>'
-           + '<form method="post" action="/">'
-           + '<p><input type="text" name="item" /></p>'
-           + '<p><input type="submit" value="Add Item" /></p>'
-           + '</form></body></html>';
-  response.setHeader('Content-Type', 'text/html; charset=utf-8');
-  response.setHeader('Content-Length', Buffer.byteLength(html));
-  response.end(html);
-};
+var app = express();
 
-var server = http.createServer(function(request, response){
-  switch (request.method) {
-    case 'POST':
-      var item = '';
-      request.setEncoding('utf8');
-      
-      request.on('data', function(chunk) {
-        item += chunk;
-      });
-      
-      request.on('end', function() {
-        items.push(item);
-        response.setHeader('Location', 'http://winterfell-nodejs-86923.euw1.nitrousbox.com/');
-        response.setHeader('Content-Type', 'text/plain');
-        response.statusCode = 302;
-        response.end();
-      });
-      
-      break;
-    case 'GET':
-      show(response);
-      break;
-  }
+app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set ('view engine', 'ejs');
+  app.set ('port', process.env.PORT || 4000);
+  app.use(express.logger('dev'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(app.router);
+  app.use(express.static(path.join(__dirname, 'public')));
 });
 
-server.listen(3000);
+app.configure('development', function() {
+  app.use(express.errorHandler());
+});
+
+app.get('/', routes.index);
+
+http.createServer(app).listen(app.get('port'), function() {
+  console.log("Todo-app server listening on port " + app.get('port'));
+});
+
+app.listen(4000);
